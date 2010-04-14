@@ -10,7 +10,15 @@ module OpenTTD
         end
         
         def post_init
-            @packet.opcode = :tcp_client_company_info
+            @packet.opcode = :tcp_client_join
+            
+            @packet.payload.client_version = '1.0.0'
+            @packet.payload.player_name = 'bobbit'
+            @packet.payload.company = 255
+            @packet.payload.network_id = 'a4782bf24f3cc3ff747843f992f19fb40'
+
+            p @packet
+            
             bytes_sent = send_data(@packet.to_binary_s)
         end
         
@@ -23,6 +31,7 @@ module OpenTTD
             
             @packet.read(@buffer)
             @buffer.slice! 0..@packet.num_bytes - 1
+
             p @packet
         end
         
