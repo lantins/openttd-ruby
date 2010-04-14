@@ -26,5 +26,10 @@ module OpenTTD
                 IPAddr.ntop(find_obj_for_name(:ip).to_binary_s)
             end
         end
+        
+        class Newgrf < OpenTTD::Encoding
+            string :id, :length => 4
+            string :md5sum, :length => 16 
+        end
     end
 end

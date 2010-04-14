@@ -1,7 +1,7 @@
 module OpenTTD
     module Payload
         class TcpServerError < OpenTTD::Encoding
-            rest :data
+            uint8 :error_code
         end
     end
 end

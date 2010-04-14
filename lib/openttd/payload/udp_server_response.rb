@@ -3,7 +3,7 @@ module OpenTTD
         class UdpServerResponse < OpenTTD::Encoding
             uint8 :game_info_version # version of game information were getting
             uint8 :grf_count # number of grf packs
-            array :grf_names, :type => [:string, {:length => 20}], :read_until => lambda { index == grf_count - 1 }, :onlyif => :custom_grfs?
+            array :grfs, :type => :newgrf, :read_until => lambda { index == grf_count - 1 }, :onlyif => :custom_grfs? 
             uint32le :current_date # date in days since 1-1-0 (DMY)
             uint32le :start_date # date in days since 1-1-0 (DMY)
             uint8 :companies_max

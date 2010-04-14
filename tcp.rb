@@ -42,5 +42,6 @@ module OpenTTD
 end
 
 EventMachine::run do
-    EventMachine::connect 'kyra.lon.lividpenguin.com', 3979, OpenTTD::Client
+    #EventMachine::connect 'kyra.lon.lividpenguin.com', 3979, OpenTTD::Client
+    EventMachine::connect '10.0.1.100', 3979, OpenTTD::Client
 end

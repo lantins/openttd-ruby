@@ -20,7 +20,7 @@ module OpenTTD
         
         TCP_PAYLOAD_OPCODES = {
             0 => :tcp_server_full,
-            #1 => :tcp_server_banned,
+            1 => :tcp_server_banned,
             2 => :tcp_client_join,
             3 => :tcp_server_error,
             4 => :tcp_client_company_info,
@@ -30,7 +30,7 @@ module OpenTTD
             #8 => :tcp_server_need_company_password,
             8 => :tcp_client_game_password,
             #10 => :tcp_client_company_password,
-            #11 => :tcp_server_welcome,
+            9 => :tcp_server_welcome,
             #12 => :tcp_client_getmap,
             #13 => :tcp_server_wait,
             #14 => :tcp_server_map,
@@ -53,8 +53,8 @@ module OpenTTD
             #31 => :tcp_server_newgame,
             #32 => :tcp_server_rcon,
             #33 => :tcp_client_rcon,
-            #34 => :tcp_server_check_newgrfs,
-            #35 => :tcp_client_newgrfs_checked,
+            32 => :tcp_server_check_newgrfs,
+            33 => :tcp_client_newgrfs_checked,
             #36 => :tcp_server_move,
             #37 => :tcp_client_move,
             #38 => :tcp_server_company_update,
