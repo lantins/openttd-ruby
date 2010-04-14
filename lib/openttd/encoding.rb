@@ -30,6 +30,10 @@ module OpenTTD
             override_getters_and_setters(fields, :no_encoding)
         end
         
+        # fields are openttd style dates.
+        def self.openttd_date(*fields)
+            override_getters_and_setters(fields, :openttd_date)
+        end
         
         # checks if the field uses any kind of encoding.
         def lookup_field_encoding(field)
@@ -63,7 +67,7 @@ module OpenTTD
                     v
                 when :boolean
                     value == true ? 1 : 0
-                when :no_encoding
+                when :no_encoding, :openttd_date
                     value
                 else
                     raise StandardError, "don't know how to deal with #{encoding} encoding."
@@ -83,6 +87,8 @@ module OpenTTD
                     encodeing_lookup_map[field][obj] || nil
                 when :boolean
                     obj == 1 ? true : false
+                when :openttd_date
+                    Date.new(0, 1, 1, Date::GREGORIAN) + obj.value
                 when :no_encoding
                     obj.snapshot
                 else
