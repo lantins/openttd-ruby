@@ -27,6 +27,14 @@ module OpenTTD
             def custom_grfs?
                 self.grf_count > 0
             end
+            
+            def game_date
+                Date.new(0, 1, 1, Date::GREGORIAN) + find_obj_for_name(:game_date).value
+            end
+            
+            def state_date
+                Date.new(0, 1, 1, Date::GREGORIAN) + find_obj_for_name(:state_date).value
+            end
         end
     end
 end
