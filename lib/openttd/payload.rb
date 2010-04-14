@@ -7,6 +7,7 @@ require 'payload/udp_server_response'
 module OpenTTD
     module Payload
         class Empty < OpenTTD::Encoding; end
+        class TcpServerFull < Empty; end
         class TcpClientCompanyInfo < Empty; end
         class UdpClientFindServer < Empty; end
     end

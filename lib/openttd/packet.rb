@@ -19,7 +19,7 @@ module OpenTTD
         }
         
         TCP_PAYLOAD_OPCODES = {
-            #0x00 => :tcp_server_full,
+            0x00 => :tcp_server_full,
             #0x01 => :tcp_server_banned,
             #0x02 => :tcp_client_join,
             #0x03 => :tcp_server_error,

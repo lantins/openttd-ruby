@@ -10,7 +10,7 @@ class Client < EventMachine::Connection
     def post_init
         puts "connected"
         @packet.opcode = :udp_client_find_server
-        bytes_sent = send_datagram(@packet.to_binary_s, '10.0.1.200', 3979)
+        bytes_sent = send_datagram(@packet.to_binary_s, 'kyra.lon.lividpenguin.com', 3979)
     end
     
     def receive_data(data)

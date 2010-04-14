@@ -5,11 +5,11 @@ module OpenTTD
     class Client < EventMachine::Connection
         def initialize(*args)
             super
-            @packet = OpenTTD::Packet::Container.new
+            @packet = OpenTTD::Packet::TCP.new
         end
         
         def post_init
-            @packet.opcode = :client_company_info
+            @packet.opcode = :tcp_client_company_info
             bytes_sent = send_data(@packet.to_binary_s)
         end
         
@@ -25,5 +25,5 @@ module OpenTTD
 end
 
 EventMachine::run do
-    EventMachine::connect '10.0.1.200', 3979, OpenTTD::Client
+    EventMachine::connect 'kyra.lon.lividpenguin.com', 3979, OpenTTD::Client
 end
