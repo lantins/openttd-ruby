@@ -6,6 +6,7 @@ module OpenTTD
         def initialize(*args)
             super
             @packet = OpenTTD::Packet::TCP.new
+            @buffer = ''
         end
         
         def post_init
@@ -14,7 +15,14 @@ module OpenTTD
         end
         
         def receive_data(data)
-            @packet.read(data)
+            @buffer << data
+            
+            return unless @buffer.length >= OpenTTD::Packet::MIN_LENGTH
+            length = @buffer[0, 2].unpack('S').first
+            return unless @buffer.length >= length
+            
+            @packet.read(@buffer)
+            @buffer.slice! 0..@packet.num_bytes - 1
             p @packet
         end
         
