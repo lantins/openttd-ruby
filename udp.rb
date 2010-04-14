@@ -4,12 +4,12 @@ require 'lib/openttd'
 class Client < EventMachine::Connection
     def initialize(*args)
         super
-        @packet = OpenTTD::Packet::Container.new
+        @packet = OpenTTD::Packet::UDP.new
     end
     
     def post_init
         puts "connected"
-        @packet.opcode = :udp_game_info
+        @packet.opcode = :udp_client_find_server
         bytes_sent = send_datagram(@packet.to_binary_s, '10.0.1.200', 3979)
     end
     

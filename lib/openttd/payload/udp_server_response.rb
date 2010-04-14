@@ -1,6 +1,6 @@
 module OpenTTD
     module Payload
-        class UdpServerGameInfo < OpenTTD::Encoding
+        class UdpServerResponse < OpenTTD::Encoding
             uint8 :info_version # version of information were getting
             uint8 :grf_count # number of grf packs
             array :grf_names, :type => [:string, {:length => 20}], :read_until => lambda { grf_count }, :onlyif => :custom_grfs?
