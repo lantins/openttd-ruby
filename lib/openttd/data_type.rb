@@ -17,5 +17,14 @@ module OpenTTD
             
             boolean_encoding :protected, :is_ai
         end
+        
+        class ServerAddress < OpenTTD::Encoding
+            uint32le :ip
+            uint16le :port
+            
+            def ip
+                IPAddr.ntop(find_obj_for_name(:ip).to_binary_s)
+            end
+        end
     end
 end

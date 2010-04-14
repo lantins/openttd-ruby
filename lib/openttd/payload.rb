@@ -2,6 +2,8 @@ $:.unshift(File.expand_path(File.dirname(__FILE__))) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 require 'payload/tcp_server_company_info'
+require 'payload/udp_client_get_list'
+require 'payload/udp_master_response_list'
 require 'payload/udp_server_detail_info'
 require 'payload/udp_server_response'
 

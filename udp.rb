@@ -10,8 +10,9 @@ class Client < EventMachine::Connection
     
     def post_init
         puts "connected"
-        @packet.opcode = :udp_client_detail_info
-        bytes_sent = send_datagram(@packet.to_binary_s, 'kyra.lon.lividpenguin.com', 3979)
+        @packet.opcode = :udp_client_get_list
+        #bytes_sent = send_datagram(@packet.to_binary_s, 'kyra.lon.lividpenguin.com', 3979)
+        bytes_sent = send_datagram(@packet.to_binary_s, OpenTTD::MASTER_SERVER_HOST, OpenTTD::MASTER_SERVER_PORT)
     end
     
     def receive_data(data)

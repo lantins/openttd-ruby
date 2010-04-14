@@ -9,8 +9,8 @@ module OpenTTD
             0x03 => :udp_server_detail_info,   # Reply of the game server about details of the game, such as companies
             #0x04 => :udp_server_register,      # Packet to register itself to the master server
             #0x05 => :udp_master_ack_register,  # Packet indicating registration has succedeed
-            #0x06 => :udp_client_get_list,      # Request for serverlist from master server
-            #0x07 => :udp_master_response_list, # Response from master server with server ip's + port's
+            0x06 => :udp_client_get_list,      # Request for serverlist from master server
+            0x07 => :udp_master_response_list, # Response from master server with server ip's + port's
             #0x08 => :udp_server_unregister,    # Request to be removed from the server-list
             #0x09 => :udp_client_get_newgrfs,   # Requests the name for a list of GRFs (GRF_ID and MD5)
             #0x10 => :udp_server_newgrfs,       # Sends the list of NewGRF's requested.
