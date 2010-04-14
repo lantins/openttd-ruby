@@ -2,8 +2,8 @@ module OpenTTD
     module Payload
         class UdpServerGameInfo < OpenTTD::Encoding
             uint8 :info_version # version of information were getting
-            uint8 :grf_count, :value => lambda { self.grf_names.length } # number of grf packs
-            array :grf_names, :type => [:string, {:length => 20}], :read_until => lambda { self.grf_count }, :onlyif => :custom_grfs?
+            uint8 :grf_count # number of grf packs
+            array :grf_names, :type => [:string, {:length => 20}], :read_until => lambda { grf_count }, :onlyif => :custom_grfs?
             uint32le :game_date # date in days since 1-1-0 (DMY)
             uint32le :state_date # date in days since 1-1-0 (DMY)
             uint8 :companies_max
