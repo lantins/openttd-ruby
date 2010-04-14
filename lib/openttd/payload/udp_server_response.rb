@@ -1,9 +1,9 @@
 module OpenTTD
     module Payload
         class UdpServerResponse < OpenTTD::Encoding
-            uint8 :info_version # version of information were getting
+            uint8 :game_info_version # version of game information were getting
             uint8 :grf_count # number of grf packs
-            array :grf_names, :type => [:string, {:length => 20}], :read_until => lambda { grf_count }, :onlyif => :custom_grfs?
+            array :grf_names, :type => [:string, {:length => 20}], :read_until => lambda { index == grf_count - 1 }, :onlyif => :custom_grfs?
             uint32le :current_date # date in days since 1-1-0 (DMY)
             uint32le :start_date # date in days since 1-1-0 (DMY)
             uint8 :companies_max
@@ -22,7 +22,7 @@ module OpenTTD
             uint8 :map_set
             uint8 :dedicated
             
-            boolean_encoding :use_password, :dedicated
+            boolean_encoding :protected, :dedicated
             openttd_date :current_date, :start_date
             
             def custom_grfs?

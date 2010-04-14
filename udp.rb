@@ -5,18 +5,27 @@ class Client < EventMachine::Connection
     def initialize(*args)
         super
         @packet = OpenTTD::Packet::UDP.new
+        @buffer = ''
     end
     
     def post_init
         puts "connected"
-        @packet.opcode = :udp_client_find_server
+        @packet.opcode = :udp_client_detail_info
         bytes_sent = send_datagram(@packet.to_binary_s, 'kyra.lon.lividpenguin.com', 3979)
     end
     
     def receive_data(data)
-        #p data
-        @packet.read(data)
-        puts @packet
+        @buffer << data
+        
+        while @buffer.length >= OpenTTD::Packet::MIN_LENGTH
+            length = @buffer[0, 2].unpack('S').first
+            return unless @buffer.length >= length
+            
+            @packet.read(@buffer)
+            @buffer.slice! 0..@packet.num_bytes - 1
+            
+            p @packet
+        end
     end
 end
 

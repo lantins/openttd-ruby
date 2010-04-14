@@ -5,8 +5,8 @@ module OpenTTD
         UDP_PAYLOAD_OPCODES = {
             0x00 => :udp_client_find_server,   # Queries a game server for game information
             0x01 => :udp_server_response,      # Reply of the game server with game information
-            #0x02 => :udp_client_detail_info,   # Queries a game server about details of the game, such as companies
-            #0x03 => :udp_server_detail_info,   # Reply of the game server about details of the game, such as companies
+            0x02 => :udp_client_detail_info,   # Queries a game server about details of the game, such as companies
+            0x03 => :udp_server_detail_info,   # Reply of the game server about details of the game, such as companies
             #0x04 => :udp_server_register,      # Packet to register itself to the master server
             #0x05 => :udp_master_ack_register,  # Packet indicating registration has succedeed
             #0x06 => :udp_client_get_list,      # Request for serverlist from master server

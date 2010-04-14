@@ -5,5 +5,6 @@ require 'bindata'
 require 'date'
 
 require 'openttd/encoding'
+require 'openttd/data_type'
 require 'openttd/payload'
 require 'openttd/packet'
