@@ -40,7 +40,7 @@ module OpenTTD
             #18 => :tcp_client_command,
             #19 => :tcp_server_command,
             #20 => :tcp_client_chat,
-            #21 => :tcp_server_chat,
+            21 => :tcp_server_chat,
             #22 => :tcp_client_set_password,
             #23 => :tcp_client_set_name,
             #24 => :tcp_client_quit,

@@ -49,12 +49,15 @@ module OpenTTD
 
                         if @packet.opcode == :tcp_server_welcome
                             puts "the server welcomes us\n"
-
-                            #@packet.opcode = :tcp_client_getmap
-                            #puts @packet
-                            #bytes_sent = send_data(@packet.to_binary_s)                
+                            @tmpClientId = @packet.payload.client_id
                         else
-                            p @packet
+                            if  @packet.opcode == :tcp_server_chat
+                                if @packet.payload.message == "moo"
+
+                                end
+                            else
+                                p @packet
+                            end
                         end
                     end
                 end
