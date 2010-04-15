@@ -30,8 +30,8 @@ module OpenTTD
                 return unless @buffer.length >= length
 
 
-                @packet.read(@buffer)
-                @buffer.slice! 0..@packet.num_bytes - 1
+                @packet.read(@buffer.slice! 0..length - 1)
+                
 
                 if @packet.opcode == :tcp_server_check_newgrfs
                     puts "server asks to check newgrfs\n"
@@ -50,13 +50,26 @@ module OpenTTD
                         if @packet.opcode == :tcp_server_welcome
                             puts "the server welcomes us\n"
                             @tmpClientId = @packet.payload.client_id
+                            
+                            @packet.opcode = :tcp_client_getmap
+                            @packet.payload.version = 268979274
+                            bytes_sent = send_data(@packet.to_binary_s)
                         else
                             if  @packet.opcode == :tcp_server_chat
                                 if @packet.payload.message == "moo"
-
+                                    @packet.payload.message = 'rar'
+                                    @packet.payload.client_id = @tmpClientId
+                                    bytes_sent = send_data(@packet.to_binary_s)
                                 end
                             else
-                                p @packet
+                                if @packet.opcode == :tcp_server_map
+                                    if @packet.payload.type == 2
+                                        @packet.opcode = :tcp_client_map_ok
+                                        bytes_sent = send_data(@packet.to_binary_s)
+                                    end
+                                else
+                                    p @packet
+                                end
                             end
                         end
                     end

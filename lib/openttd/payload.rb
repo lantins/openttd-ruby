@@ -9,7 +9,12 @@ require 'payload/tcp_server_need_password'
 require 'payload/tcp_client_password'
 require 'payload/tcp_server_welcome'
 require 'payload/tcp_server_client_info'
+require 'payload/tcp_client_getmap'
 require 'payload/tcp_server_map'
+require 'payload/tcp_server_frame'
+require 'payload/tcp_client_ack'
+require 'payload/tcp_server_sync'
+require 'payload/tcp_server_join'
 require 'payload/tcp_server_chat'
 require 'payload/udp_client_get_list'
 require 'payload/udp_master_response_list'
@@ -25,7 +30,6 @@ module OpenTTD
 
         class TcpClientCompanyInfo < Empty; end
         class TcpClientNewgrfsChecked < Empty; end
-        class TcpClientGetmap < Empty; end
         class TcpClientMapOk < Empty; end
         
         class UdpClientDetailInfo < Empty; end
