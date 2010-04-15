@@ -4,6 +4,7 @@ $:.unshift(File.expand_path(File.dirname(__FILE__))) unless
 require 'date'
 require 'ipaddr'
 require 'bindata'
+require 'eventmachine'
 
 module OpenTTD
     MASTER_SERVER_VERSION = 2
@@ -17,3 +18,4 @@ require 'openttd/encoding'
 require 'openttd/data_type'
 require 'openttd/payload'
 require 'openttd/packet'
+require 'openttd/client'

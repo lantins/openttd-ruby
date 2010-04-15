@@ -1,25 +1,32 @@
 require 'lib/openttd'
 
-require 'json'
+class MeowClient < OpenTTD::Client
+    def initialize
+        super
+    end
+    
+    on :tcp_server_chat do
+        # something
+    end
+end
 
-request = OpenTTD::Packet::Container.new
-request.opcode = :udp_game_info
+# callbacks and logic defined in your sub-class.
+client = MeowClient.new
+client.connect
 
-puts "REQUEST"
-p request.to_binary_s
-p request
+# or ...
+client = OpenTTD::Client.new do
+    # define callbacks and logic.
+    
+    on :tcp_server_chat do
+        # something...
+    end
+end
+client.connect
 
-#puts "RESPONCE"
-#responce = OpenTTD::Packet::Container.new
-#responce.read "O\x00\x05\x06\x01\x00p3p Transport\x00\xB0\a\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x0F/\x01\x00\x00\x00\x00\x00<\xF6\xFF\xFF\xFF\xFF\xFF\xFF\x1E\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00<none>\x00\x05\x00\x05\x06\x00"
-##puts JSON.pretty_generate(responce.snapshot)
-#
-#p responce.to_binary_s
-#p responce.payload.name = 'Paws Logistics'
-#p responce.to_binary_s
-#
+# get servers from master server.
+client.master.servers
 
-#data = OpenTTD::Packet::Container.new
-#data.opcode = :server_company_info
-#puts JSON.pretty_generate(data.snapshot)
-#p data.to_binary_s
+# query a spesific server.
+client.game_info 'kyra.lon.lividpenguin.com', 9999
+client.detail_info 'kyra.lon.lividpenguin.com', 9999

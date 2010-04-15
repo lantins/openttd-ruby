@@ -13,6 +13,9 @@ end
 
 require 'openttd'
 
+TEST_SERVER_ADDRESS = 'kyra.lon.lividpenguin.com'
+TEST_SERVER_PORT = 3979
+
 # extend Test::Unit
 class Test::Unit::TestCase
     include RR::Adapters::TestUnit

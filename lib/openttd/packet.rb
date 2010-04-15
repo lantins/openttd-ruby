@@ -27,7 +27,7 @@ module OpenTTD
             5 => :tcp_server_company_info,
             #6 => :tcp_server_client_info,
             7 => :tcp_server_need_password,
-            8 => :tcp_client_password,
+            #8 => :tcp_client_password,
             9 => :tcp_server_welcome,
             #10 => :tcp_client_getmap,
             #11 => :tcp_server_wait,
