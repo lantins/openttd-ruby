@@ -5,12 +5,15 @@ describe 'OpenTTD::Client' do
         @client = OpenTTD::Client.new
     end
     
-    test '#game_info' do
-        info = @client.game_info TEST_SERVER_ADDRESS, TEST_SERVER_PORT
+    test '#query_server_details' do
+        details = @client.query_server_details TEST_SERVER_ADDRESS, TEST_SERVER_PORT
+        
+        details.companies_max.should.equal 8
     end
     
-    test '#detail_info' do
-        detail_info = @client.detail_info TEST_SERVER_ADDRESS, TEST_SERVER_PORT
+    test '#query_server_companies' do
+        companies = @client.query_server_companies TEST_SERVER_ADDRESS, TEST_SERVER_PORT
+        companies[0].id.should.equal 0
     end
 end
 

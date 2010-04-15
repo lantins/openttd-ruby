@@ -1,6 +1,6 @@
 OpenTTD Ruby
 ============
 
-OpenTTD network lib for Ruby.
+OpenTTD network library and client for Ruby.
 
-**Working Status:** Not so much...
+**Working Status:** Under development, code is very whild and subject to change!
