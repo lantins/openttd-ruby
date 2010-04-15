@@ -1,7 +1,7 @@
 module OpenTTD
     module Payload
         class TcpClientCommand < OpenTTD::Encoding
-            uint8   :comapny_id
+            uint8   :company
             uint32le :command_id
             uint32le :p1
             uint32le :p2
