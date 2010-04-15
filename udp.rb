@@ -1,7 +1,7 @@
 require 'eventmachine'
 require 'lib/openttd'
 
-class Client < EventMachine::Connection
+class TestClient < EventMachine::Connection
     def initialize(*args)
         super
         @packet = OpenTTD::Packet::UDP.new
@@ -31,5 +31,5 @@ class Client < EventMachine::Connection
 end
 
 EventMachine::run do
-    client = EventMachine::open_datagram_socket '0.0.0.0', 3979, Client
+    client = EventMachine::open_datagram_socket '0.0.0.0', 3979, TestClient
 end

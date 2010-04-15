@@ -63,7 +63,7 @@ module OpenTTD
             value = case encoding
                 when :lookup
                     v = encodeing_lookup_map[field].select { |k,v| v == value }.collect { |a| a[0] }.first
-                    raise StandardError, "unknown value for attribute: #{field}" unless v
+                    raise StandardError, "unknown value: #{value} for attribute: #{field}" unless v
                     v
                 when :boolean
                     value == true ? 1 : 0
