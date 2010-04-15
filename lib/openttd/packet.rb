@@ -55,8 +55,8 @@ module OpenTTD
             33 => :tcp_client_newgrfs_checked,
             #34 => :tcp_server_move,
             #35 => :tcp_client_move,
-            #36 => :tcp_server_company_update,
-            #37 => :tcp_server_config_update,
+            36 => :tcp_server_company_update,
+            37 => :tcp_server_config_update,
             #38 => :tcp_end
         }
         
