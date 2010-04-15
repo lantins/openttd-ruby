@@ -56,8 +56,11 @@ class TestClient < EventMachine::Connection
                     else
                         if  @packet.opcode == :tcp_server_chat
                             if @packet.payload.message == "moo"
+                                @packet.opcode = :tcp_client_chat
+                                @packet.payload.action_id = 3
+                                @packet.payload.type_id = 0
                                 @packet.payload.message = 'rar'
-                                @packet.payload.client_id = @tmpClientId
+                                @packet.payload.client_id = 0
                                 bytes_sent = send_data(@packet.to_binary_s)
                             end
                         else
@@ -69,11 +72,11 @@ class TestClient < EventMachine::Connection
                             else
                                 if @packet.opcode == :tcp_server_frame
                                     @frame = @packet.payload.frame_count_max
-                                    if @frame % 50 == 0
-                                    @packet.opcode = :tcp_client_ack
-                                    @packet.payload.frame = @frame
-                                    bytes_sent = send_data(@packet.to_binary_s)
-                                    p @packet
+                                    if @frame % 76 == 0
+                                        @packet.opcode = :tcp_client_ack
+                                        @packet.payload.frame = @frame
+                                        bytes_sent = send_data(@packet.to_binary_s)
+                                        p @packet
                                     end
                                 else
                                     p @packet
