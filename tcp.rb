@@ -67,7 +67,17 @@ class TestClient < EventMachine::Connection
                                     bytes_sent = send_data(@packet.to_binary_s)
                                 end
                             else
-                                p @packet
+                                if @packet.opcode == :tcp_server_frame
+                                    @frame = @packet.payload.frame_count_max
+                                    if @frame % 50 == 0
+                                    @packet.opcode = :tcp_client_ack
+                                    @packet.payload.frame = @frame
+                                    bytes_sent = send_data(@packet.to_binary_s)
+                                    p @packet
+                                    end
+                                else
+                                    p @packet
+                                end
                             end
                         end
                     end

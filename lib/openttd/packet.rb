@@ -38,7 +38,7 @@ module OpenTTD
             16 => :tcp_server_sync,
             17 => :tcp_client_ack,
             #18 => :tcp_client_command,
-            #19 => :tcp_server_command,
+            19 => :tcp_server_command,
             #20 => :tcp_client_chat,
             21 => :tcp_server_chat,
             #22 => :tcp_client_set_password,
