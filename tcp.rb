@@ -30,12 +30,12 @@ class TestClient < EventMachine::Connection
             case
             when @packet.opcode == :tcp_server_check_newgrfs
                 @packet.opcode = :tcp_client_newgrfs_checked
-                bytes_sent = send_data(@packet.to_binary_s)                
+                bytes_sent = send_data(@packet.to_binary_s)
             
             when @packet.opcode == :tcp_server_need_password
                 @packet.opcode = :tcp_client_password
                 @packet.payload.password_type = 0
-                @packet.payload.password = 'temp'
+                @packet.payload.password = 'meowpass'
                 bytes_sent = send_data(@packet.to_binary_s)
             
             when @packet.opcode == :tcp_server_welcome
@@ -48,8 +48,8 @@ class TestClient < EventMachine::Connection
                 case
                 when @packet.payload.message == "moo"
                     @packet.opcode = :tcp_client_chat
-                    @packet.payload.action_id = 3
-                    @packet.payload.type_id = 0
+                    @packet.payload.action_id = :chat # 3
+                    @packet.payload.type_id = :broadcast # 0
                     @packet.payload.message = 'rar'
                     @packet.payload.client_id = 0
                     bytes_sent = send_data(@packet.to_binary_s)
@@ -108,6 +108,6 @@ class TestClient < EventMachine::Connection
 end
 
 EventMachine::run do
-    #EventMachine::connect 'kyra.lon.lividpenguin.com', 3979, OpenTTD::Client
-    EventMachine::connect '10.0.1.100', 3979, TestClient
+    EventMachine::connect 'kyra.lon.lividpenguin.com', 3979, TestClient
+    #EventMachine::connect '10.0.1.100', 3979, TestClient
 end

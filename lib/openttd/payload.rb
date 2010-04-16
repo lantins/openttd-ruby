@@ -1,41 +1,10 @@
 $:.unshift(File.expand_path(File.dirname(__FILE__))) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
-require 'payload/tcp_server_company_info'
-require 'payload/tcp_client_join'
-require 'payload/tcp_server_error'
-require 'payload/tcp_server_error_quit'
-require 'payload/tcp_server_check_newgrfs'
-require 'payload/tcp_server_need_password'
-require 'payload/tcp_client_password'
-require 'payload/tcp_server_welcome'
-require 'payload/tcp_server_client_info'
-require 'payload/tcp_client_getmap'
-require 'payload/tcp_server_wait'
-require 'payload/tcp_server_map'
-require 'payload/tcp_server_frame'
-require 'payload/tcp_client_ack'
-require 'payload/tcp_server_sync'
-require 'payload/tcp_server_join'
-require 'payload/tcp_server_config_update'
-require 'payload/tcp_server_company_update'
-require 'payload/tcp_server_command'
-require 'payload/tcp_client_command'
-require 'payload/tcp_server_chat'
-require 'payload/tcp_client_chat'
-require 'payload/tcp_client_error'
-require 'payload/tcp_server_quit'
-require 'payload/tcp_server_rcon'
-require 'payload/tcp_server_move'
-require 'payload/tcp_client_set_password'
-require 'payload/tcp_client_set_name'
-require 'payload/tcp_client_rcon'
-require 'payload/tcp_client_move'
-require 'payload/udp_client_get_list'
-require 'payload/udp_client_get_newgrfs'
-require 'payload/udp_master_response_list'
-require 'payload/udp_server_detail_info'
-require 'payload/udp_server_response'
+require 'payload/tcp_client'
+require 'payload/tcp_server'
+require 'payload/udp_client'
+require 'payload/udp_server'
 
 module OpenTTD
     module Payload
@@ -43,16 +12,38 @@ module OpenTTD
         
         class TcpServerFull < Empty; end
         class TcpServerBanned < Empty; end
-
+        
         class TcpClientCompanyInfo < Empty; end
         class TcpClientNewgrfsChecked < Empty; end
         class TcpClientMapOk < Empty; end
         class TcpClientQuit < Empty; end
-
+        
         class TcpServerShutdown < Empty; end
         class TcpServerNewgame < Empty; end
-
+        
         class UdpClientDetailInfo < Empty; end
         class UdpClientFindServer < Empty; end
+        
+        
+        CHAT_ENCODING_MAP = {
+            :action_id => {
+                0 => :join,
+                1 => :leave,
+                2 => :server_message,
+                3 => :chat,
+                4 => :chat_company,
+                5 => :chat_client,
+                6 => :give_money,
+                7 => :name_change,
+                8 => :company_spectator,
+                9 => :company_join,
+                10 => :company_new
+            },
+            :type_id => {
+                0 => :broadcast,
+                1 => :team,
+                2 => :private
+            }
+        }
     end
 end

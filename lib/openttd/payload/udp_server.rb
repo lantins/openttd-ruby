@@ -1,5 +1,23 @@
 module OpenTTD
     module Payload
+        class UdpMasterResponseList < OpenTTD::Encoding
+            uint8 :version
+            uint16le :server_count
+            
+            array :servers, :type => :server_address, :read_until => lambda { index == server_count - 1 }
+        end
+        
+        class UdpServerDetailInfo < OpenTTD::Encoding
+            uint8 :company_info_version # version of company information were getting
+            uint8 :company_count
+            
+            array :companies, :type => :company_info, :read_until => lambda { index == company_count - 1 }
+            
+            def has_companies?
+                self.company_count > 0
+            end
+        end
+        
         class UdpServerResponse < OpenTTD::Encoding
             uint8 :game_info_version # version of game information were getting
             uint8 :grf_count # number of grf packs
