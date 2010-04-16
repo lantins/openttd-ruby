@@ -70,14 +70,8 @@ module OpenTTD
         def receive_data(data)
             @buffer << data
             
-            while @buffer.length >= OpenTTD::Packet::MIN_LENGTH
-                length = @buffer[0, 2].unpack('S').first
-                return unless @buffer.length >= length
-                
-                @packet.read(@buffer)
-                @buffer.slice! 0..@packet.num_bytes - 1
-            end
-            
+            packets = OpenTTD::Packet::extract_packets!(@buffer)
+            @packet.read(packets.first)
             @udp.query_result = @packet
             
             EventMachine.stop_event_loop if should_stop_event_loop

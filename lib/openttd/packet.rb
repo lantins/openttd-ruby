@@ -60,6 +60,18 @@ module OpenTTD
             #38 => :tcp_end
         }
         
+        def self.extract_packets!(buffer)
+            packets = []
+            
+            while buffer.length >= OpenTTD::Packet::MIN_LENGTH
+                length = buffer[0, 2].unpack('S').first
+                break unless buffer.length >= length
+                
+                packets << buffer.slice!(0..length - 1)
+            end
+            packets
+        end
+        
         class Container < OpenTTD::Encoding
             uint16le :total_length, :value => lambda { self.num_bytes }
             uint8 :opcode, :initial_value => 0

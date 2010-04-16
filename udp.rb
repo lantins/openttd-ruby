@@ -11,20 +11,16 @@ class TestClient < EventMachine::Connection
     def post_init
         puts "connected"
         @packet.opcode = :udp_client_find_server
-        bytes_sent = send_datagram(@packet.to_binary_s, '10.0.1.100', 3979)
+        bytes_sent = send_datagram(@packet.to_binary_s, 'kyra.lon.lividpenguin.com', 3979)
         #bytes_sent = send_datagram(@packet.to_binary_s, OpenTTD::MASTER_SERVER_HOST, OpenTTD::MASTER_SERVER_PORT)
     end
     
     def receive_data(data)
         @buffer << data
         
-        while @buffer.length >= OpenTTD::Packet::MIN_LENGTH
-            length = @buffer[0, 2].unpack('S').first
-            return unless @buffer.length >= length
-            
-            @packet.read(@buffer)
-            @buffer.slice! 0..@packet.num_bytes - 1
-            
+        packets = OpenTTD::Packet::extract_packets!(@buffer)
+        packets.each do |p|
+            @packet.read(p)
             p @packet
         end
     end

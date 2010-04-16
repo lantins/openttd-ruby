@@ -20,12 +20,9 @@ class TestClient < EventMachine::Connection
     def receive_data(data)
         @buffer << data
         
-        while @buffer.length >= OpenTTD::Packet::MIN_LENGTH
-             
-            length = @buffer[0, 2].unpack('S').first
-            return unless @buffer.length >= length
-
-            @packet.read(@buffer.slice! 0..length - 1)
+        packets = OpenTTD::Packet::extract_packets!(@buffer)
+        packets.each do |p|
+            @packet.read(p)
             
             case
             when @packet.opcode == :tcp_server_check_newgrfs
