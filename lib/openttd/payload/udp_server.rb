@@ -41,9 +41,9 @@ module OpenTTD
             uint16le :map_width
             uint16le :map_height
             uint8 :map_set
-            uint8 :dedicated
+            uint8 :dedicated?
             
-            boolean_encoding :protected, :dedicated
+            boolean_encoding :protected, :dedicated?
             openttd_date :current_date, :start_date
             
             def custom_grfs?

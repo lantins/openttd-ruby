@@ -24,7 +24,6 @@ module OpenTTD
         class UdpClientDetailInfo < Empty; end
         class UdpClientFindServer < Empty; end
         
-        
         CHAT_ENCODING_MAP = {
             :action_id => {
                 0 => :join,

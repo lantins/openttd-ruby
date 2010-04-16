@@ -9,11 +9,13 @@ describe 'OpenTTD::Client' do
         details = @client.query_server_details TEST_SERVER_ADDRESS, TEST_SERVER_PORT
         
         details.companies_max.should.equal 8
+        details.dedicated?.should.equal true
     end
     
     test '#query_server_companies' do
         companies = @client.query_server_companies TEST_SERVER_ADDRESS, TEST_SERVER_PORT
         companies[0].id.should.equal 0
+        companies[0].protected?.should.equal false
     end
 end
 
