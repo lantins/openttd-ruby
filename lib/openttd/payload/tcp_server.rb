@@ -1,5 +1,6 @@
 module OpenTTD
     module Payload
+        # callback
         class TcpServerChat < OpenTTD::Encoding
             uint8    :action_id
             uint32le :client_id
@@ -15,6 +16,7 @@ module OpenTTD
             end
         end
         
+        # connection - these are the grf' the server is running.
         class TcpServerCheckNewgrfs < OpenTTD::Encoding
             uint8 :grf_count
             array :grfs, :type => :newgrf, :read_until => lambda { index == grf_count - 1 }, :onlyif => :custom_grfs?
@@ -24,12 +26,14 @@ module OpenTTD
             end
         end
         
+        # internal
         class TcpServerClientInfo < OpenTTD::Encoding
             uint32le :client_id
             uint8    :company_id
             stringz  :name
         end
         
+        # callback - lots...
         class TcpServerCommand < OpenTTD::Encoding
             uint8    :company_id
             uint32le :command
@@ -44,6 +48,7 @@ module OpenTTD
             boolean_encoding :self_send
         end
         
+        # internal
         class TcpServerCompanyInfo < OpenTTD::Encoding
             uint8 :info_version # version of information were getting
             uint8 :last_packet # is this the last packet of information?
@@ -53,24 +58,29 @@ module OpenTTD
             stringz :clients
         end
         
+        # internal - we think its a bitmap of bools if the company is passworded.
         class TcpServerCompanyUpdate < OpenTTD::Encoding
             uint16le    :passworded
         end
         
+        # internal
         class TcpServerConfigUpdate < OpenTTD::Encoding
             uint8   :max_companies
             uint8   :max_spectators
         end
         
+        # callback - your prob gonna be disconnected after this...
         class TcpServerError < OpenTTD::Encoding
             uint8 :error_code
         end
         
+        # callback - we think, if client quits with a server error.
         class TcpServerErrorQuit < OpenTTD::Encoding
             uint32le :client_id
             uint8 :error_code
         end
         
+        # callback - kinda ignore...
         class TcpServerFrame < OpenTTD::Encoding
             uint32le :frame_count
             uint32le :frame_count_max
@@ -79,10 +89,12 @@ module OpenTTD
             #uint32le :seed2 #server define "NETWORK_SEND_DOUBLE_SEED"
         end
         
+        # callback, internal - client joining server, yay.
         class TcpServerJoin < OpenTTD::Encoding
             uint32le    :client_id
         end
         
+        # connection - map data, could store somewhere for use later?
         class TcpServerMap < OpenTTD::Encoding
             uint8 :type
             
@@ -104,35 +116,42 @@ module OpenTTD
             end
         end
         
+        # callback - client changed company.
         class TcpServerMove < OpenTTD::Encoding
             uint32le    :client_id
             uint8       :company_id
         end
         
+        # connection
         class TcpServerNeedPassword < OpenTTD::Encoding
             uint8 :type
             uint32le :seed
             stringz  :network_id
         end
         
+        # callback - client quit.
         class TcpServerQuit < OpenTTD::Encoding
             uint32le    :client_id
         end
         
+        # callback???
         class TcpServerRcon < OpenTTD::Encoding
             uint16le :colour
             stringz :rcon
         end
         
+        # connection - ignored.
         class TcpServerSync < OpenTTD::Encoding
             uint32le    :frame
             uint32le    :seed
         end
         
+        # connection - if we are asked to wait for map data.
         class TcpServerWait < OpenTTD::Encoding
             uint8 :waiting
         end
         
+        # connection
         class TcpServerWelcome < OpenTTD::Encoding
             uint32le    :client_id
             uint32le    :seed

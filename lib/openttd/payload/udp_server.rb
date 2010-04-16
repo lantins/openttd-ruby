@@ -1,5 +1,6 @@
 module OpenTTD
     module Payload
+        # client - list of servers from master server.
         class UdpMasterResponseList < OpenTTD::Encoding
             uint8 :version
             uint16le :server_count
@@ -7,6 +8,7 @@ module OpenTTD
             array :servers, :type => :server_address, :read_until => lambda { index == server_count - 1 }
         end
         
+        # client - list of companies on a server.
         class UdpServerDetailInfo < OpenTTD::Encoding
             uint8 :company_info_version # version of company information were getting
             uint8 :company_count
@@ -18,6 +20,7 @@ module OpenTTD
             end
         end
         
+        # client - server details / settings.
         class UdpServerResponse < OpenTTD::Encoding
             uint8 :game_info_version # version of game information were getting
             uint8 :grf_count # number of grf packs

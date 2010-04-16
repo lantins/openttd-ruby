@@ -5,8 +5,19 @@ class MeowClient < OpenTTD::Client
         super
     end
     
+    # "payload"=>{"action_id"=>:chat_company, "client_id"=>137, "self_sent"=>false, "message"=>"cats say meow", "data"=>0}
     on :tcp_server_chat do
-        # something
+        
+    end
+    
+    # "payload"=>{"action_id"=>:chat, "client_id"=>127, "self_sent"=>false, "message"=>"foobar", "data"=>0}
+    on :tcp_server_chat, :when => { :action_id => :chat } do
+        
+    end
+    
+    # "payload"=>{"action_id"=>:chat, "client_id"=>127, "self_sent"=>false, "message"=>"meow", "data"=>0}
+    on :tcp_server_chat, :when => { :action_id => :chat, :message => ['moo', 'meow'] } do
+        
     end
 end
 

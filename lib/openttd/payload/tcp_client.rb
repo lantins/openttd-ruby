@@ -1,9 +1,11 @@
 module OpenTTD
     module Payload
+        # connection
         class TcpClientAck < OpenTTD::Encoding
             uint32le :frame
         end
         
+        # client
         class TcpClientChat < OpenTTD::Encoding
             uint8    :action_id
             uint8    :type_id
@@ -18,6 +20,7 @@ module OpenTTD
             end
         end
         
+        # client
         class TcpClientCommand < OpenTTD::Encoding
             uint8   :company
             uint32le :command_id
@@ -28,14 +31,17 @@ module OpenTTD
             uint8 :callback_id
         end
         
+        # client
         class TcpClientError < OpenTTD::Encoding
             uint8 :error_code
         end
         
+        # connection
         class TcpClientGetmap < OpenTTD::Encoding
             uint32le    :version
         end
         
+        # connection
         class TcpClientJoin < OpenTTD::Encoding
             stringz :client_version
             stringz :player_name
@@ -44,25 +50,30 @@ module OpenTTD
             stringz :network_id
         end
         
+        # client - move to another company
         class TcpClientMove < OpenTTD::Encoding
             uint8 :company
             stringz :password_hash
         end
         
+        # connection
         class TcpClientPassword < OpenTTD::Encoding
             uint8 :password_type
             stringz :password
         end
         
+        # client
         class TcpClientRcon < OpenTTD::Encoding
             stringz :password
             stringz :command
         end
         
+        # client
         class TcpClientSetName < OpenTTD::Encoding
             stringz :name
         end
         
+        # set company password
         class TcpClientSetPassword < OpenTTD::Encoding
             stringz :password_hash
             
@@ -72,7 +83,6 @@ module OpenTTD
             #  checksum.Finish(digest);
             #  for (int di = 0; di < 16; di++) sprintf(hashed_password + di * 2, "%02x", digest[di]);
             #  hashed_password[lengthof(hashed_password) - 1] = '\0';
-            
         end
     end
 end

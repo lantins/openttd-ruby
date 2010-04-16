@@ -97,8 +97,9 @@ class TestClient < EventMachine::Connection
                     bytes_sent = send_data(@packet.to_binary_s)
                 end
             
-            else p @packet #print unprocessed packets
+            else# p @packet #print unprocessed packets
             end
+            p @packet
         end
     end
     
