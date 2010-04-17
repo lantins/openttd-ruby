@@ -44,5 +44,32 @@ module OpenTTD
                 2 => :private
             }
         }
+        
+        ERROR_ENCODING_MAP = {
+            :error_code => {
+                0 => :general,
+                1 => :desync,
+                2 => :savegame_failed,
+                3 => :connection_lost,
+                4 => :illegal_packet,
+                5 => :newgrf_mismatch,
+                6 => :not_authorized,
+                7 => :not_expected,
+                8 => :wrong_revision,
+                9 => :name_in_use,
+                10 => :wrong_password,
+                11 => :player_mismatch,
+                12 => :kicked,
+                13 => :cheater,
+                14 => :full
+            }
+        }
+        
+        PASSWORD_TYPE_ENCODING_MAP = {
+            :password_type => {
+                0 => :server,
+                1 => :company
+            }
+        }
     end
 end

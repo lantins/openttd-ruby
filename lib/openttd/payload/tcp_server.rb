@@ -72,6 +72,11 @@ module OpenTTD
         # callback - your prob gonna be disconnected after this...
         class TcpServerError < OpenTTD::Encoding
             uint8 :error_code
+            
+            lookup_encoding :error_code
+            def encodeing_lookup_map
+                ERROR_ENCODING_MAP
+            end
         end
         
         # callback - we think, if client quits with a server error.
@@ -124,9 +129,14 @@ module OpenTTD
         
         # connection
         class TcpServerNeedPassword < OpenTTD::Encoding
-            uint8 :type
+            uint8 :password_type
             uint32le :seed
             stringz  :network_id
+            
+            lookup_encoding :password_type
+            def encodeing_lookup_map
+                PASSWORD_TYPE_ENCODING_MAP
+            end
         end
         
         # callback - client quit.

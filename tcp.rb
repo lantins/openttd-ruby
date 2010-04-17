@@ -31,7 +31,7 @@ class TestClient < EventMachine::Connection
             
             when @packet.opcode == :tcp_server_need_password
                 @packet.opcode = :tcp_client_password
-                @packet.payload.password_type = 0
+                @packet.payload.password_type = :server
                 @packet.payload.password = 'meowpass'
                 bytes_sent = send_data(@packet.to_binary_s)
             

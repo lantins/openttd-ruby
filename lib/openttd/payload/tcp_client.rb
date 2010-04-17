@@ -60,6 +60,11 @@ module OpenTTD
         class TcpClientPassword < OpenTTD::Encoding
             uint8 :password_type
             stringz :password
+            
+            lookup_encoding :password_type
+            def encodeing_lookup_map
+                PASSWORD_TYPE_ENCODING_MAP
+            end
         end
         
         # client
