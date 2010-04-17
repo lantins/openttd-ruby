@@ -1,14 +1,74 @@
 module OpenTTD
     class Client
-        def initialize(&b)
+        attr_accessor :config, :events
+        
+        def initialize(&block)
             @tcp = nil
             @udp = UDPConnection.new
+            @events = {}
+            @config = Hashie::Mash.new({ 
+                :server => { :host => '127.0.0.1', :port => 3979 },
+                :player => { :name => 'ottd-bot' }
+            })
+            
+            instance_eval(&block) if block_given?
+        end
+        
+        def configure(&block)
+            block.call(@config)
+        end
+        
+        def on(opcode, criteria = nil, &block)
+            (@events[opcode] ||= []) << [criteria, block]
         end
         
         # starts a TCP connection.
-        def start
-            
+        def run
+            EventMachine::run do
+                @tcp = EventMachine::connect(@config.server.host, @config.server.port, TCPConnection)
+                @tcp.client = self
+                init
+            end
         end
+        
+        def send_packet(packet)
+            @tcp.send_packet(packet)
+        end
+        
+        def init
+            spectator_join
+        end
+        
+        def spectator_join
+            p = OpenTTD::Packet::TCP.new
+            p.opcode = :tcp_client_join
+            p.payload.client_version = '1.0.0'
+            p.payload.player_name = config.player.name
+            p.payload.company = 255
+            send_packet(p)
+        end
+        
+        def find_event(opcode, payload = nil)
+            handlers = @events[opcode] || [nil]
+            
+            #handlers.select { |criteria, block| :meow == :meow }
+            handlers.first
+        end
+        
+        def dispatch_packet_event(packet)
+            criteria, handler = find_event(packet.opcode, packet.payload)
+            
+            self.instance_eval(&handler) if handler
+            #on_tcp_server_need_password(packet) if packet.opcode == :tcp_server_need_password
+        end
+        
+        #def on_tcp_server_need_password(packet)
+        #    p = OpenTTD::Packet::TCP.new
+        #    p.opcode = :tcp_client_password
+        #    p.payload.password_type = :server
+        #    p.payload.password = 'meowpass'
+        #    send_packet(p)
+        #end
         
         # sends 'udp_client_find_server' packet to get server details/settings.
         def query_server_details(server, port = 3979)
@@ -23,8 +83,32 @@ module OpenTTD
         end
     end
     
-    class TCPClient < EventMachine::Connection
+    class TCPConnection < EventMachine::Connection
+        attr_accessor :client
         
+        def post_init
+            @in = OpenTTD::Packet::TCP.new
+            @buffer = ''
+        end
+        
+        def receive_data(data)
+            @buffer << data
+            
+            packets = OpenTTD::Packet::extract_packets!(@buffer)
+            packets.each do |p|
+                @in.read(p)
+                p @in
+                @client.dispatch_packet_event(@in)
+            end
+        end
+        
+        def unbind
+        end
+        
+        def send_packet(packet)
+            p packet
+            send_data(packet.to_binary_s)
+        end
     end
     
     class UDPConnection

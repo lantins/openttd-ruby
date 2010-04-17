@@ -17,6 +17,10 @@ describe 'OpenTTD::Client' do
         companies[0].id.should.equal 0
         companies[0].protected?.should.equal false
     end
+    
+    test '#run' do
+        
+    end
 end
 
 #describe 'Using a subclass of OpenTTD::Client' do

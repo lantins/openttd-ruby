@@ -6,6 +6,7 @@ require 'date'
 require 'ipaddr'
 require 'bindata'
 require 'eventmachine'
+require 'hashie'
 
 module OpenTTD
     MASTER_SERVER_VERSION = 2
