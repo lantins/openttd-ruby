@@ -13,7 +13,6 @@ class TestClient < EventMachine::Connection
         @packet.payload.client_version = '1.0.0'
         @packet.payload.player_name = 'bobbit'
         @packet.payload.company = 255
-        @packet.payload.network_id = 'a4782bf24f3cc3ff747843f992f19fb40'
         bytes_sent = send_data(@packet.to_binary_s)
     end
     

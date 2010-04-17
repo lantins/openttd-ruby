@@ -47,7 +47,6 @@ module OpenTTD
             stringz :player_name
             uint8   :company
             uint8   :language
-            stringz :network_id
         end
         
         # client - move to another company
