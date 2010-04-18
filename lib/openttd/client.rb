@@ -6,6 +6,8 @@ module OpenTTD
             :player => { :name => 'ottd-bot' }
         })
         
+        attr_accessor :payload
+        
         def initialize(config = nil, events = nil, &block)
             @tcp = nil
             @udp = UDPConnection.new
@@ -70,7 +72,7 @@ module OpenTTD
             send_packet(p)
         end
         
-        def find_event(opcode, payload = nil)
+        def find_event(opcode)
             handlers = events[opcode] || [nil]
             
             #handlers.select { |criteria, block| :meow == :meow }
@@ -78,19 +80,12 @@ module OpenTTD
         end
         
         def dispatch_packet_event(packet)
-            criteria, handler = find_event(packet.opcode, packet.payload)
+            @payload = packet.payload
+            criteria, handler = find_event(packet.opcode)
             
             self.instance_eval(&handler) if handler
             #on_tcp_server_need_password(packet) if packet.opcode == :tcp_server_need_password
         end
-        
-        #def on_tcp_server_need_password(packet)
-        #    p = OpenTTD::Packet::TCP.new
-        #    p.opcode = :tcp_client_password
-        #    p.payload.password_type = :server
-        #    p.payload.password = 'meowpass'
-        #    send_packet(p)
-        #end
         
         # sends 'udp_client_find_server' packet to get server details/settings.
         def query_server_details(server, port = 3979)
@@ -109,6 +104,7 @@ module OpenTTD
         attr_accessor :client
         
         def post_init
+            puts '-- connecting'
             @in = OpenTTD::Packet::TCP.new
             @buffer = ''
         end
@@ -125,6 +121,7 @@ module OpenTTD
         end
         
         def unbind
+            puts '-- disconnected'
         end
         
         def send_packet(packet)
