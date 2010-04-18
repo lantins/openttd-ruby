@@ -59,17 +59,17 @@ module OpenTTD
             end
         end
         
-        def send_packet(packet)
+        def send_packet(opcode, &block)
+            packet = OpenTTD::Packet::TCP.build(opcode, &block)
             @tcp.send_packet(packet)
         end
         
         def spectator_join
-            p = OpenTTD::Packet::TCP.new
-            p.opcode = :tcp_client_join
-            p.payload.client_version = '1.0.0'
-            p.payload.player_name = config.player.name
-            p.payload.company = 255
-            send_packet(p)
+            send_packet :tcp_client_join do |payload|
+                payload.client_version = '1.0.0'
+                payload.player_name = config.player.name
+                payload.company = 255
+            end
         end
         
         def find_event(opcode)
@@ -84,6 +84,7 @@ module OpenTTD
             criteria, handler = find_event(packet.opcode)
             
             self.instance_eval(&handler) if handler
+            #eval("instance_eval(&handler)", handler.binding) if handler
             #on_tcp_server_need_password(packet) if packet.opcode == :tcp_server_need_password
         end
         

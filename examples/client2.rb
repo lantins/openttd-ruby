@@ -7,11 +7,10 @@ client = OpenTTD::Client.new do
     end
     
     on :tcp_server_need_password do
-        p = OpenTTD::Packet::TCP.new
-        p.opcode = :tcp_client_password
-        p.payload.password_type = :server
-        p.payload.password = 'meowpass'
-        send_packet(p)
+        send_packet :tcp_client_password do |pl|
+            pl.password_type = :server
+            pl.password = 'meowpass'
+        end
     end
 end
 
