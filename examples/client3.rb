@@ -7,31 +7,25 @@ class MaiowBot < OpenTTD::Client
     end
     
     on :tcp_server_check_newgrfs do
-        p = OpenTTD::Packet::TCP.new
-        p.opcode = :tcp_client_newgrfs_checked
-        send_packet(p)
+        send_packet :tcp_client_newgrfs_checked
     end
     
     on :tcp_server_need_password do
-        p = OpenTTD::Packet::TCP.new
-        p.opcode = :tcp_client_password
-        p.payload.password_type = :server
-        p.payload.password = 'meowpass'
-        send_packet(p)
+        send_packet :tcp_client_password do |pl|
+            pl.password_type = :server
+            pl.password = 'meowpass'
+        end
     end
     
     on :tcp_server_welcome do
-        p = OpenTTD::Packet::TCP.new
-        p.opcode = :tcp_client_getmap
-        p.payload.version = 268979274
-        send_packet(p)
+        send_packet :tcp_client_getmap do |pl|
+            pl.version = 268979274
+        end
     end
     
     on :tcp_server_map do
         if @payload.type == 2
-            p = OpenTTD::Packet::TCP.new
-            p.opcode = :tcp_client_map_ok
-            send_packet(p)
+            send_packet :tcp_client_map_ok
         end
     end
     
@@ -39,22 +33,20 @@ class MaiowBot < OpenTTD::Client
         frame = @payload.frame_count_max
         #ack every 76 frames
         if frame % 76 == 0
-            p = OpenTTD::Packet::TCP.new
-            p.opcode = :tcp_client_ack
-            p.payload.frame = frame
-            send_packet(p)
+            send_packet :tcp_client_ack do |pl|
+                pl.frame = frame
+            end
         end
     end
     
     on :tcp_server_chat do
         if @payload.message == 'maiow'
-            p = OpenTTD::Packet::TCP.new
-            p.opcode = :tcp_client_chat
-            p.payload.action_id = :chat
-            p.payload.type_id = :broadcast
-            p.payload.message = 'purrrrrrrr'
-            p.payload.client_id = 0
-            send_packet(p)
+            send_packet :tcp_client_chat do |pl|
+                pl.action_id = :chat
+                pl.type_id = :broadcast
+                pl.message = 'purrrrrrrr'
+                pl.client_id = 0
+            end
         end
     end
     

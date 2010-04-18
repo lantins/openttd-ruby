@@ -78,10 +78,16 @@ module OpenTTD
             
             lookup_encoding :opcode
             
+            def self.build(opcode, &block)
+                packet = new
+                packet.opcode = opcode
+                block.call(packet.payload) if block_given?
+                packet
+            end
+            
             def opcode_int
                 obj = find_obj_for_name(:opcode)
             end
-            
         end
         
         class UDP < OpenTTD::Packet::Container
