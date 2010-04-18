@@ -50,5 +50,9 @@ module OpenTTD
                 self.grf_count > 0
             end
         end
+        
+        class UdpServerNewgrfs < OpenTTD::Encoding
+            rest :data
+        end
     end
 end

@@ -13,7 +13,7 @@ module OpenTTD
             7 => :udp_master_response_list, # Response from master server with server ip's + port's
             #8 => :udp_server_unregister,    # Request to be removed from the server-list
             9 => :udp_client_get_newgrfs,   # Requests the name for a list of GRFs (GRF_ID and MD5)
-            #0 => :udp_server_newgrfs,       # Sends the list of NewGRF's requested.
+            10 => :udp_server_newgrfs,       # Sends the list of NewGRF's requested.
             #11 => :udp_master_session_key,   # Sends a fresh session key to the client
             #12 => :udp_end                   # Must ALWAYS be on the end of this list!! (period)
         }

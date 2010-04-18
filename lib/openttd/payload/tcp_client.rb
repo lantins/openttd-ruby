@@ -34,10 +34,16 @@ module OpenTTD
         # client
         class TcpClientError < OpenTTD::Encoding
             uint8 :error_code
+            
+            lookup_encoding :error_code
+            def encodeing_lookup_map
+                ERROR_ENCODING_MAP
+            end
         end
         
         # connection
         class TcpClientGetmap < OpenTTD::Encoding
+            # see rev.cpp.in for how to generate this
             uint32le    :version
         end
         
