@@ -1,42 +1,64 @@
 module OpenTTD
     class Client
-        attr_accessor :config, :events
+        @events = {}
+        @config = Hashie::Mash.new({ 
+            :server => { :host => '127.0.0.1', :port => 3979 },
+            :player => { :name => 'ottd-bot' }
+        })
         
-        def initialize(&block)
+        def initialize(config = nil, events = nil, &block)
             @tcp = nil
             @udp = UDPConnection.new
-            @events = {}
-            @config = Hashie::Mash.new({ 
-                :server => { :host => '127.0.0.1', :port => 3979 },
-                :player => { :name => 'ottd-bot' }
-            })
+            @events ||= events
+            @config ||= config
             
-            instance_eval(&block) if block_given?
+            self.class.instance_eval(&block) if block_given?
         end
         
-        def configure(&block)
-            block.call(@config)
+        class << self
+            def inherited(subclass)
+            end
+            
+            def config
+                klass = superclass ? superclass : self
+                @config ||= klass.instance_eval { @config }
+            end
+            
+            def events
+                klass = superclass ? superclass : self
+                @events ||= klass.instance_eval { @events }
+            end
+            
+            def configure(&block)
+                config.instance_eval(&block)
+            end
+            
+            def on(opcode, criteria = nil, &block)
+                (events[opcode] ||= []) << [criteria, block]
+            end
         end
         
-        def on(opcode, criteria = nil, &block)
-            (@events[opcode] ||= []) << [criteria, block]
-        end
+        #configure do
+        #    server.host = 'kyra.lon.lividpenguin.com'
+        #    player.name = 'ottd-maiow-bot'
+        #end
+        
+        def config; self.class.config; end
+        def events; self.class.events; end
+        def configure(*args, &b); self.class.configure(*args, &b); end
+        def on(*args, &b); self.class.on(*args, &b); end
         
         # starts a TCP connection.
         def run
             EventMachine::run do
-                @tcp = EventMachine::connect(@config.server.host, @config.server.port, TCPConnection)
+                @tcp = EventMachine::connect(config.server.host, config.server.port, TCPConnection)
                 @tcp.client = self
-                init
+                spectator_join
             end
         end
         
         def send_packet(packet)
             @tcp.send_packet(packet)
-        end
-        
-        def init
-            spectator_join
         end
         
         def spectator_join
@@ -49,7 +71,7 @@ module OpenTTD
         end
         
         def find_event(opcode, payload = nil)
-            handlers = @events[opcode] || [nil]
+            handlers = events[opcode] || [nil]
             
             #handlers.select { |criteria, block| :meow == :meow }
             handlers.first
@@ -97,7 +119,7 @@ module OpenTTD
             packets = OpenTTD::Packet::extract_packets!(@buffer)
             packets.each do |p|
                 @in.read(p)
-                p @in
+                puts ">> #{@in}"
                 @client.dispatch_packet_event(@in)
             end
         end
@@ -106,7 +128,7 @@ module OpenTTD
         end
         
         def send_packet(packet)
-            p packet
+            puts "<< #{packet}"
             send_data(packet.to_binary_s)
         end
     end

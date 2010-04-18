@@ -1,5 +1,5 @@
 require 'eventmachine'
-require 'lib/openttd'
+require '../lib/openttd'
 
 class TestClient < EventMachine::Connection
     def initialize(*args)

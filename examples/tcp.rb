@@ -1,5 +1,5 @@
 require 'eventmachine'
-require 'lib/openttd'
+require '../lib/openttd'
 
 class TestClient < EventMachine::Connection
     def initialize(*args)
@@ -39,7 +39,7 @@ class TestClient < EventMachine::Connection
                 @packet.opcode = :tcp_client_getmap
                 @packet.payload.version = 268979274
                 bytes_sent = send_data(@packet.to_binary_s)
-           
+            
             when @packet.opcode == :tcp_server_chat
                 case
                 when @packet.payload.message == "moo"
@@ -77,7 +77,7 @@ class TestClient < EventMachine::Connection
                     @packet.payload.password_hash = ''
                     bytes_sent = send_data(@packet.to_binary_s)
                 end
-           
+            
             when @packet.opcode == :tcp_server_map
                 if @packet.payload.type == 2
                     @packet.opcode = :tcp_client_map_ok
