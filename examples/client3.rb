@@ -6,6 +6,12 @@ class MaiowBot < OpenTTD::Client
         player.name = 'maiow'
     end
     
+    on :tcp_server_check_newgrfs do
+        p = OpenTTD::Packet::TCP.new
+        p.opcode = :tcp_client_newgrfs_checked
+        send_packet(p)
+    end
+    
     on :tcp_server_need_password do
         p = OpenTTD::Packet::TCP.new
         p.opcode = :tcp_client_password
