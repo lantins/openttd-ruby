@@ -1,5 +1,7 @@
 require 'rake/testtask'
 require 'fileutils'
+require 'yard'
+require 'yard/rake/yardoc_task'
 
 #
 # Default Task
@@ -16,4 +18,15 @@ namespace 'test' do
           t.verbose = true
         end
     end
+end
+
+#
+# Docs
+#
+YARD::Rake::YardocTask.new :yardoc do |t|
+    t.files   = ['lib/**/*.rb']
+    t.options = ['--output-dir', "doc/api",
+                 '--files', 'LICENSE',
+                 '--readme', 'README.markdown',
+                 '--title', 'OpenTTD-Ruby - API Documentation']
 end

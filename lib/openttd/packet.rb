@@ -1,4 +1,7 @@
 module OpenTTD
+    ##
+    # Packets are sent between client and server, the payload varies depending
+    # on the opcode of the packet.
     module Packet
         MIN_LENGTH = 3 # min length of a packet in bytes.
         
@@ -7,15 +10,15 @@ module OpenTTD
             1 => :udp_server_response,      # Reply of the game server with game information
             2 => :udp_client_detail_info,   # Queries a game server about details of the game, such as companies
             3 => :udp_server_detail_info,   # Reply of the game server about details of the game, such as companies
-            #4 => :udp_server_register,      # Packet to register itself to the master server
-            #5 => :udp_master_ack_register,  # Packet indicating registration has succedeed
+            #4 => :udp_server_register,     # Packet to register itself to the master server
+            #5 => :udp_master_ack_register, # Packet indicating registration has succedeed
             6 => :udp_client_get_list,      # Request for serverlist from master server
             7 => :udp_master_response_list, # Response from master server with server ip's + port's
-            #8 => :udp_server_unregister,    # Request to be removed from the server-list
+            #8 => :udp_server_unregister,   # Request to be removed from the server-list
             9 => :udp_client_get_newgrfs,   # Requests the name for a list of GRFs (GRF_ID and MD5)
-            10 => :udp_server_newgrfs,       # Sends the list of NewGRF's requested.
-            #11 => :udp_master_session_key,   # Sends a fresh session key to the client
-            #12 => :udp_end                   # Must ALWAYS be on the end of this list!! (period)
+            10 => :udp_server_newgrfs,      # Sends the list of NewGRF's requested.
+            #11 => :udp_master_session_key, # Sends a fresh session key to the client
+            #12 => :udp_end                 # Never seen...
         }
         
         TCP_PAYLOAD_OPCODES = {
@@ -60,24 +63,37 @@ module OpenTTD
             #38 => :tcp_end
         }
         
+        ##
+        # Destructivly extracts packets from a string buffer.
+        #
+        # @param buffer [String]
+        # @return [Array]
         def self.extract_packets!(buffer)
             packets = []
-            
             while buffer.length >= OpenTTD::Packet::MIN_LENGTH
                 length = buffer[0, 2].unpack('S').first
                 break unless buffer.length >= length
-                
                 packets << buffer.slice!(0..length - 1)
             end
             packets
         end
         
+        ##
+        # Container for the entire packet.
+        #
+        # Please use #build to construct packets on the UDP and TCP classes
+        # respectively.
         class Container < OpenTTD::Encoding
             uint16le :total_length, :value => lambda { self.num_bytes }
             uint8 :opcode, :initial_value => 0
             
             lookup_encoding :opcode
             
+            ##
+            # Build and return a new (TCP only for the mo) packet.
+            # 
+            # @param opcode [Symbol] opcode of the packet to construct
+            # @yield optionally set payload data using a block
             def self.build(opcode, &block)
                 packet = new
                 packet.opcode = opcode
@@ -85,11 +101,13 @@ module OpenTTD
                 packet
             end
             
-            def opcode_int
-                obj = find_obj_for_name(:opcode)
-            end
+            ##
+            # Returns the int value of the packets opcode.
+            def opcode_int; find_obj_for_name(:opcode); end
         end
         
+        ##
+        # UDP packet container.
         class UDP < OpenTTD::Packet::Container
             choice :payload, :choices => UDP_PAYLOAD_OPCODES, :selection => lambda { opcode_int }
             
@@ -98,6 +116,8 @@ module OpenTTD
             end
         end
         
+        ##
+        # TCP packet container.
         class TCP < OpenTTD::Packet::Container
             choice :payload, :choices => TCP_PAYLOAD_OPCODES, :selection => lambda { opcode_int }
             

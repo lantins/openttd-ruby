@@ -1,4 +1,6 @@
 module OpenTTD
+    ##
+    # Provides common encoding/decoding of attributes such as booleans, lookup tables.
     class Encoding < BinData::Record
         # will override getters and setters for fields.
         def self.override_getters_and_setters(fields, encoding)

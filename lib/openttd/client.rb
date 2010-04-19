@@ -1,4 +1,6 @@
 module OpenTTD
+    ##
+    # Event driven OpenTTD client.
     class Client
         @events = {}
         @config = Hashie::Mash.new({ 
@@ -39,11 +41,6 @@ module OpenTTD
                 (events[opcode] ||= []) << [criteria, block]
             end
         end
-        
-        #configure do
-        #    server.host = 'kyra.lon.lividpenguin.com'
-        #    player.name = 'ottd-maiow-bot'
-        #end
         
         def config; self.class.config; end
         def events; self.class.events; end

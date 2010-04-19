@@ -7,11 +7,21 @@ require 'payload/udp_client'
 require 'payload/udp_server'
 
 module OpenTTD
+    ##
+    # Payloads are part of a packet, they offer a 'high level' view of the
+    # binary data.
+    #
+    # - TcpServer & UdpServer  server to client
+    # - TcpClient & UdpClient  client to server
     module Payload
+        
+        ##
+        # @private
+        # An empty payload, only the opcode of the packet is used.
         class Empty < OpenTTD::Encoding; end
         
-        class TcpServerFull < Empty; end
-        class TcpServerBanned < Empty; end
+        class TcpServerFull < Empty; end # the server is full, mayhaps try again later?
+        class TcpServerBanned < Empty; end # your banned from the server, oh noes.
         
         class TcpClientCompanyInfo < Empty; end
         class TcpClientNewgrfsChecked < Empty; end
@@ -21,8 +31,8 @@ module OpenTTD
         class TcpServerShutdown < Empty; end
         class TcpServerNewgame < Empty; end
         
-        class UdpClientDetailInfo < Empty; end
-        class UdpClientFindServer < Empty; end
+        class UdpClientDetailInfo < Empty; end # companies on the server.
+        class UdpClientFindServer < Empty; end # server details/settings.
         
         CHAT_ENCODING_MAP = {
             :action_id => {
