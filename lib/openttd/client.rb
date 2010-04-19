@@ -72,20 +72,37 @@ module OpenTTD
             end
         end
         
-        def find_event(opcode)
-            handlers = events[opcode] || [nil]
+        def find_event_handler(opcode)
+            opcode_events = events[opcode] || [[nil, nil]]
+            return opcode_events[0] if opcode_events.length == 1 && opcode_events[0][0].nil?
             
-            #handlers.select { |criteria, block| :meow == :meow }
-            handlers.first
+            match_results = opcode_events.inject([]) do |result, handler|
+                criteria = handler[0] || []
+                matches = 0
+                
+                criteria.each do |k, v|
+                    matches += 1 if @payload.send(k) == v
+                end
+                
+                result << handler + [matches, criteria.length, matches == criteria.length]
+                result
+            end
+            
+            match_results.sort! do |a, b|
+                aa = a[4] == true ? a[3] : a[2] - a[3]
+                bb = b[4] == true ? b[3] : b[2] - b[3]
+                bb <=> aa
+            end
+            
+            rr = match_results.select { |result| result[4] }
+            p rr
+            rr.first
         end
         
         def dispatch_packet_event(packet)
             @payload = packet.payload
-            criteria, handler = find_event(packet.opcode)
-            
+            criteria, handler = find_event_handler(packet.opcode)
             self.instance_eval(&handler) if handler
-            #eval("instance_eval(&handler)", handler.binding) if handler
-            #on_tcp_server_need_password(packet) if packet.opcode == :tcp_server_need_password
         end
         
         # sends 'udp_client_find_server' packet to get server details/settings.
