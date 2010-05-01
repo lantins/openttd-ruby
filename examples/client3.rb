@@ -1,4 +1,4 @@
-require 'lib/openttd'
+require '../lib/openttd'
 
 class MaiowBot < OpenTTD::Client
     configure do

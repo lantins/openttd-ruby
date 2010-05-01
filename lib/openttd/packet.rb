@@ -94,10 +94,10 @@ module OpenTTD
             # 
             # @param opcode [Symbol] opcode of the packet to construct
             # @yield optionally set payload data using a block
-            def self.build(opcode, &block)
+            def self.build(opcode, *args, &block)
                 packet = new
                 packet.opcode = opcode
-                block.call(packet.payload) if block_given?
+                block.call(packet.payload, *args) if block_given?
                 packet
             end
             

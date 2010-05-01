@@ -56,8 +56,8 @@ module OpenTTD
             end
         end
         
-        def send_packet(opcode, &block)
-            packet = OpenTTD::Packet::TCP.build(opcode, &block)
+        def send_packet(opcode, *args, &block)
+            packet = OpenTTD::Packet::TCP.build(opcode, *args, &block)
             @tcp.send_packet(packet)
         end
         
