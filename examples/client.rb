@@ -3,40 +3,8 @@ require 'lib/openttd'
 class MaiowBot < OpenTTD::Client
   configure do
     server.host = 'kyra.lon.lividpenguin.com'
+    server.password = 'meowpass'
     player.name = 'maiow'
-  end
-
-  on :tcp_server_check_newgrfs do
-    send_packet :tcp_client_newgrfs_checked
-  end
-
-  on :tcp_server_need_password do
-    send_packet :tcp_client_password do |pl|
-      pl.password_type = :server
-      pl.password = 'meowpass'
-    end
-  end
-
-  on :tcp_server_welcome do
-    send_packet :tcp_client_getmap do |pl|
-      pl.version = 268979274
-    end
-  end
-
-  on :tcp_server_map do
-    if @payload.type == 2
-      send_packet :tcp_client_map_ok
-    end
-  end
-
-  on :tcp_server_frame do
-    frame = @payload.frame_count_max
-    #ack every 76 frames
-    if frame % 76 == 0
-      send_packet :tcp_client_ack do |pl|
-        pl.frame = frame
-      end
-    end
   end
 
   on :tcp_server_chat, :action_id => :chat, :message => 'maiow' do
@@ -62,7 +30,7 @@ class MaiowBot < OpenTTD::Client
     send_packet :tcp_client_chat do |pl|
       pl.action_id = :chat
       pl.type_id = :broadcast
-      pl.message = @payload.message == 'foo' ? 'barfoo' : 'foobar'
+      pl.message = payload.message == 'foo' ? 'barfoo' : 'foobar'
       pl.client_id = 0
     end
   end
