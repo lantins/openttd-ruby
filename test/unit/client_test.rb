@@ -1,27 +1,25 @@
-require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
+require File.dirname(__FILE__) + '/../test_helper'
 
-describe 'OpenTTD::Client' do
-    before(:each) do
-        @client = OpenTTD::Client.new
-    end
+class TestClient < Test::Unit::TestCase
+  def setup
+    @client = OpenTTD::Client.new
+  end
+
+  def test_query_server_details
+    details = @client.query_server_details TEST_SERVER_ADDRESS, TEST_SERVER_PORT
+
+    assert_equal 8, details.companies_max
+    assert_equal true, details.dedicated?
+  end
+
+  def test_query_server_companies
+    companies = @client.query_server_companies TEST_SERVER_ADDRESS, TEST_SERVER_PORT
+    company_0 = companies[0]
     
-    test '#query_server_details' do
-        details = @client.query_server_details TEST_SERVER_ADDRESS, TEST_SERVER_PORT
-        
-        details.companies_max.should.equal 8
-        details.dedicated?.should.equal true
-    end
-    
-    test '#query_server_companies' do
-        companies = @client.query_server_companies TEST_SERVER_ADDRESS, TEST_SERVER_PORT
-        companies[0].id.should.equal 0
-        companies[0].protected?.should.equal false
-    end
-    
-    test '#run' do
-        
-    end
+    assert_equal 0, companies[0].id
+    assert_equal false, companies[0].protected?
+  end
+
+  def test_run
+  end
 end
-
-#describe 'Using a subclass of OpenTTD::Client' do
-#end
