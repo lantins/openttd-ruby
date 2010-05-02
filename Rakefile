@@ -15,7 +15,7 @@ desc 'Build documentation.'
 YARD::Rake::YardocTask.new :yardoc do |t|
   t.files   = ['lib/**/*.rb']
   t.options = ['--output-dir', "doc/",
-               '--files', 'LICENSE'
+               '--files', 'LICENSE',
                '--readme', 'README.md',
                '--title', 'OpenTTD Ruby - API Documentation']
 end

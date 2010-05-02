@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/test_helper')
 
 class TestDataTypeCompanyInfo < Test::Unit::TestCase
   def test_decode_binary_data
