@@ -29,6 +29,11 @@ module OpenTTD
             uint32le :tile
             stringz :text
             uint8 :callback_id
+            
+            lookup_encoding :command
+            def encodeing_lookup_map
+                COMMAND_ENCODING_MAP
+            end
         end
         
         # client

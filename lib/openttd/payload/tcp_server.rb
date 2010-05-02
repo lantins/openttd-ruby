@@ -36,7 +36,8 @@ module OpenTTD
         # callback - lots...
         class TcpServerCommand < OpenTTD::Encoding
             uint8    :company_id
-            uint32le :command
+            uint16le :command
+            uint16le :flags
             uint32le :p1
             uint32le :p2
             uint32le :tile
@@ -46,6 +47,10 @@ module OpenTTD
             uint8    :self_send
             
             boolean_encoding :self_send
+            lookup_encoding :command
+            def encodeing_lookup_map
+                COMMAND_ENCODING_MAP
+            end
         end
         
         # internal
