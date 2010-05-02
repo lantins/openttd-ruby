@@ -19,7 +19,4 @@ class TestClient < Test::Unit::TestCase
     assert_equal 0, companies[0].id
     assert_equal false, companies[0].protected?
   end
-
-  def test_run
-  end
 end

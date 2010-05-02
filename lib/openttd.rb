@@ -9,11 +9,11 @@ require 'eventmachine'
 require 'hashie'
 
 module OpenTTD
-    MASTER_SERVER_VERSION = 2 # protocol version
-    MASTER_SERVER_HOST    = 'master.openttd.org'
-    CONTENT_SERVER_HOST   = 'content.openttd.org'
-    MASTER_SERVER_PORT    = 3978
-    CONTENT_SERVER_PORT   = 3978
+  MASTER_SERVER_VERSION = 2 # protocol version
+  MASTER_SERVER_HOST    = 'master.openttd.org'
+  CONTENT_SERVER_HOST   = 'content.openttd.org'
+  MASTER_SERVER_PORT    = 3978
+  CONTENT_SERVER_PORT   = 3978
 end
 
 require 'openttd/encoding'
